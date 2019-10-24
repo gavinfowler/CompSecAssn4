@@ -31,7 +31,19 @@ python3 app.py
 ### Task 3B
 
 - [ ] Generate and save salt
-- [ ] Salt the password and hash the password (use sha1 or something)
+
+```python
+import secrets
+random_string = secrets.token_hex(8))
+```
+
+- [ ] Salt the password and hash the password
+
+```python
+import hashlib
+hashlib.sha224(b"Text").hexdigest()
+```
+
 - [ ] Save the salted and hashed password to file
 
 ### Task 3C
