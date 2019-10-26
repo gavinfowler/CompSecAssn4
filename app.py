@@ -125,6 +125,13 @@ def generateListDouble(word):
 
     tempArr = []
     for word in words:
+        for rep in replacementList:
+            tempArr.append(word.replace(rep["original"], rep["modified"]))
+            break
+    words.extend(tempArr)
+
+    tempArr = []
+    for word in words:
         for symbol in SYMBOLS:
             tempArr.append(secondToLast(word, symbol))
             tempArr.append(addToLast(word, symbol))
@@ -134,7 +141,6 @@ def generateListDouble(word):
 
 
 def generateListTriple(word):
-    print("called")
     words = [word]
     words.append(triple(word))
 
@@ -150,6 +156,13 @@ def generateListTriple(word):
 
     tempArr = []
     for word in words:
+        for rep in replacementList:
+            tempArr.append(word.replace(rep["original"], rep["modified"]))
+            break
+    words.extend(tempArr)
+
+    tempArr = []
+    for word in words:
         for symbol in SYMBOLS:
             tempArr.append(secondToLast(word, symbol))
             tempArr.append(addToLast(word, symbol))
@@ -158,7 +171,21 @@ def generateListTriple(word):
     return words
 
 
+def createListOfPasswords():
+    global dictionaryList
+    with open('passwords_list.csv', mode='w') as passwords_list:
+        passwords_writer = csv.DictWriter(passwords_list, ['word'])
+        passwords_writer.writeheader()
+        wordList = []
+        for word in dictionaryList:
+            wordList.extend(generateListDouble(word))
+            wordList.extend(generateListTriple(word))
+        for word in wordList:
+            passwords_writer.writerow({"word": word})
+
+
 if __name__ == "__main__":
     parseDictCsv()
     parseReplacementCsv()
+    createListOfPasswords()
     app.run(debug=True)

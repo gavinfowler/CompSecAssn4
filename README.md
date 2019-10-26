@@ -2,6 +2,8 @@
 
 Assignment 4: Secure authentication
 
+Uses the python Black linter.
+
 Run with:
 
 ```sh
