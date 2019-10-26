@@ -2,6 +2,8 @@
 
 Assignment 4: Secure authentication
 
+Uses the python Black linter.
+
 Run with:
 
 ```sh
@@ -13,9 +15,10 @@ python3 app.py
 
 ### Task 1
 
-- [ ] Create list of dictionary words (30)
-- [ ] Create list of dictionary word replacements
-- [ ] Create UI for Task 1
+- [x] Create list of dictionary words (30)
+- [x] Create list of dictionary word replacements
+- [x] Create UI for Task 1
+- [x] Create Backend for Task 1
 
 ### Task 2
 
