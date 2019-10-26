@@ -14,8 +14,9 @@ python3 app.py
 ### Task 1
 
 - [x] Create list of dictionary words (30)
-- [ ] Create list of dictionary word replacements
-- [ ] Create UI for Task 1
+- [x] Create list of dictionary word replacements
+- [x] Create UI for Task 1
+- [x] Create Backend for Task 1
 
 ### Task 2
 
