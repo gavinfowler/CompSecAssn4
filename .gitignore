@@ -1,3 +1,5 @@
 venv
 .vscode
 *__pycache__*
+*savedHashes.csv
+*savedPasswords.csv
