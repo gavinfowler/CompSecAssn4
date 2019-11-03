@@ -1,35 +1,14 @@
 from flask import Flask, request, send_from_directory, jsonify
-import itertools
 from flask_cors import CORS, cross_origin
 import csv
-import copy
+import json
+import os.path
+import hashlib
+import secrets
+from utils.task1 import *
 
-DICTIONARY = "dictionary.csv"
-dictionaryList = []
-REPLACEMENT = "replacement.csv"
-replacementList = []
-SYMBOLS = [
-    "!",
-    "@",
-    "#",
-    "$",
-    "%",
-    "^",
-    "&",
-    "*",
-    "(",
-    ")",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "0",
-]
+ACTUALPASSWORDS = "csv_files/savedPasswords.csv"
+ACTUALHASHES = "csv_files/savedHashes.csv"
 
 app = Flask(__name__)
 CORS(app)
@@ -65,127 +44,57 @@ def task3():
     return send_from_directory(".", "client/task3.html")
 
 
-def parseDictCsv():
-    global dictionaryList
-    dictionaryList = []
-    with open(DICTIONARY, mode="r") as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            dictionaryList.append(row["word"])
+# Send using:
+# var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
+# var theUrl = "/task3/savepass";
+# xmlhttp.open("POST", theUrl);
+# xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+# xmlhttp.send(JSON.stringify({ "username": "username", "password": "password" }));
 
 
-def parseReplacementCsv():
-    global replacementList
-    replacementList = []
-    with open(REPLACEMENT, mode="r") as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            replacementList.append(
-                {"original": row["original"], "modified": row["modified"]}
-            )
+@app.route("/task3/savepass")
+def savePass():
+    try:
+        body = json.loads(request.data)
+        username = body["username"]
+        password = body["password"]
+        hashed = secrets.token_hex(8)
+        saltedPassword = password + hashed
+        password = hashlib.sha224(bytes(saltedPassword, "utf-8")).hexdigest()
+
+        with open(ACTUALPASSWORDS, "a") as csvfile:
+            fieldnames = ["username", "password"]
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writerow({"username": username, "password": password})
+
+        with open(ACTUALHASHES, "a") as csvfile:
+            fieldnames = ["username", "hashes"]
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writerow({"username": username, "hashes": hashed})
+
+        return jsonify({"acknowledged": "true"})
+    except:
+        print("Saving password to a file failed")
+        return jsonify({"acknowledged": "false"})
 
 
-def double(string):
-    return string + string
+def initPasswordList():
+    if not os.path.exists(ACTUALPASSWORDS):
+        with open(ACTUALPASSWORDS, "a") as csvfile:
+            fieldnames = ["username", "password"]
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
 
-
-def triple(string):
-    return string + string + string
-
-
-def reverseWord(string):
-    return string[::-1]
-
-
-def capitalize(string):
-    return string.capitalize()
-
-
-def secondToLast(string, char):
-    return string[: len(string) - 1] + char + string[-1:]
-
-
-def addToLast(string, char):
-    return string + char
-
-
-def generateListDouble(word):
-    words = [word]
-    words.append(double(word))
-
-    tempArr = []
-    for word in words:
-        tempArr.append(reverseWord(word))
-    words.extend(tempArr)
-
-    tempArr = []
-    for word in words:
-        tempArr.append(capitalize(word))
-    words.extend(tempArr)
-
-    tempArr = []
-    for word in words:
-        for rep in replacementList:
-            tempArr.append(word.replace(rep["original"], rep["modified"]))
-            break
-    words.extend(tempArr)
-
-    tempArr = []
-    for word in words:
-        for symbol in SYMBOLS:
-            tempArr.append(secondToLast(word, symbol))
-            tempArr.append(addToLast(word, symbol))
-    words.extend(tempArr)
-
-    return words
-
-
-def generateListTriple(word):
-    words = [word]
-    words.append(triple(word))
-
-    tempArr = []
-    for word in words:
-        tempArr.append(reverseWord(word))
-    words.extend(tempArr)
-
-    tempArr = []
-    for word in words:
-        tempArr.append(capitalize(word))
-    words.extend(tempArr)
-
-    tempArr = []
-    for word in words:
-        for rep in replacementList:
-            tempArr.append(word.replace(rep["original"], rep["modified"]))
-            break
-    words.extend(tempArr)
-
-    tempArr = []
-    for word in words:
-        for symbol in SYMBOLS:
-            tempArr.append(secondToLast(word, symbol))
-            tempArr.append(addToLast(word, symbol))
-    words.extend(tempArr)
-
-    return words
-
-
-def createListOfPasswords():
-    global dictionaryList
-    with open('passwords_list.csv', mode='w') as passwords_list:
-        passwords_writer = csv.DictWriter(passwords_list, ['word'])
-        passwords_writer.writeheader()
-        wordList = []
-        for word in dictionaryList:
-            wordList.extend(generateListDouble(word))
-            wordList.extend(generateListTriple(word))
-        for word in wordList:
-            passwords_writer.writerow({"word": word})
+    if not os.path.exists(ACTUALHASHES):
+        with open(ACTUALHASHES, "a") as csvfile:
+            fieldnames = ["username", "hashes"]
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
 
 
 if __name__ == "__main__":
     parseDictCsv()
     parseReplacementCsv()
     createListOfPasswords()
+    initPasswordList()
     app.run(debug=True)
