@@ -6,6 +6,7 @@ import os.path
 import hashlib
 import secrets
 from utils.task1 import *
+from utils.task2 import *
 
 ACTUALPASSWORDS = "csv_files/savedPasswords.csv"
 ACTUALHASHES = "csv_files/savedHashes.csv"
@@ -38,6 +39,10 @@ def task1List(word):
 def task2():
     return send_from_directory(".", "client/task2.html")
 
+@app.route("/task2/<word>")
+def task2List(word):
+    test(word)
+    return jsonify(word)
 
 @app.route("/task3")
 def task3():
