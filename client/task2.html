@@ -14,6 +14,11 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
+    <style>
+      input {
+        margin: 1em;
+      }
+    </style>
   </head>
 
   <body>
@@ -33,6 +38,69 @@
     </div>
     <div class="text-center">
       <h1>Task 2</h1>
+      <div class="mb-3 mx-auto w-75">
+        <input id="first" type="text" class="form-control" placeholder="First Name" aria-label="Recipient's First name" aria-describedby="basic-addon2">
+      
+        <input id="last" type="text" class="form-control" placeholder="Last Name" aria-label="Recipient's Last name" aria-describedby="basic-addon2">
+      
+        <p class="text-left" style="margin-left: 1em;">Birth date</p>
+
+        <input id="birth" type="date" class="form-control" placeholder="Date Of Birth" aria-label="Recipient's birthday" aria-describedby="basic-addon2">
+      
+        <input id="phone" type="tel" class="form-control" placeholder="Phone Number" aria-label="Recipient's phone number" aria-describedby="basic-addon2">
+      
+        <input id="street" type="text" class="form-control" placeholder="Street" aria-label="Recipient's street address" aria-describedby="basic-addon2">
+      
+        <input id="apt" type="text" class="form-control" placeholder="Apt No" aria-label="Recipient's apartment number" aria-describedby="basic-addon2">
+      
+        <input id="city" type="text" class="form-control" placeholder="City" aria-label="Recipient's city" aria-describedby="basic-addon2">
+      
+        <input id="state" type="text" class="form-control" placeholder="State" aria-label="Recipient's state" aria-describedby="basic-addon2">
+      
+        <input id="zip" type="number" maxlength="5" class="form-control" placeholder="Zip Code" aria-label="Recipient's zip code" aria-describedby="basic-addon2">
+
+        <input id="email" type="email" class="form-control" placeholder="Email" aria-label="Recipient's email address" aria-describedby="basic-addon2">
+
+        <button onclick="buttonClicked()" class="btn btn-primary mt-3" type="button">Submit</button>
+      </div>
+      <div>
+        <p class="mt-5">
+          Result:
+        </p>
+        <p id="result"
+          class="mt-3 text-justify"
+          style="width:80%;margin:auto">
+          Nothing yet...
+        </p>
+      </div>
     </div>
   </body>
+  <script>
+    let button = document.getElementById("button")
+    let first = document.getElementById("first")
+    let last = document.getElementById("last")
+    let birth = document.getElementById("birth")
+    let phone = document.getElementById("phone")
+    let street = document.getElementById("street")
+    let apt = document.getElementById("apt")
+    let city = document.getElementById("city")
+    let state = document.getElementById("state")
+    let zip = document.getElementById("zip")
+    let email = document.getElementById("email")
+    let result = document.getElementById("result")
+    
+    function buttonClicked () {
+      let value = [first.value, last.value, birth.value, phone.value, street.value, apt.value, city.value, state.value, zip.value, email.value]
+      result.innerHTML = "Working..."
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            // Typical action to be performed when the document is ready:
+            result.innerHTML = JSON.parse(xhttp.responseText).words.join(', ');
+          }
+      };
+      xhttp.open("GET", "/task2/" + value, true);
+      xhttp.send();
+    }
+  </script>
 </html>
