@@ -22,9 +22,9 @@ python3 app.py
 
 ### Task 2
 
-- [ ] Create UI form to accept input
-- [ ] Create backend to accept data from input
-- [ ] Generate list of popular passwords from form
+- [x] Create UI form to accept input
+- [x] Create backend to accept data from input
+- [x] Generate list of popular passwords from form
 
 ### Task 3A
 
