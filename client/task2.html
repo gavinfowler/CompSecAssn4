@@ -14,6 +14,11 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
+    <style>
+      input {
+        margin: 1em;
+      }
+    </style>
   </head>
 
   <body>
@@ -33,11 +38,13 @@
     </div>
     <div class="text-center">
       <h1>Task 2</h1>
-      <div width="500px">
+      <div class="mb-3 mx-auto w-75">
         <input id="first" type="text" class="form-control" placeholder="First Name" aria-label="Recipient's First name" aria-describedby="basic-addon2">
       
         <input id="last" type="text" class="form-control" placeholder="Last Name" aria-label="Recipient's Last name" aria-describedby="basic-addon2">
       
+        <p class="text-left" style="margin-left: 1em;">Birth date</p>
+
         <input id="birth" type="date" class="form-control" placeholder="Date Of Birth" aria-label="Recipient's birthday" aria-describedby="basic-addon2">
       
         <input id="phone" type="tel" class="form-control" placeholder="Phone Number" aria-label="Recipient's phone number" aria-describedby="basic-addon2">
@@ -53,9 +60,8 @@
         <input id="zip" type="number" maxlength="5" class="form-control" placeholder="Zip Code" aria-label="Recipient's zip code" aria-describedby="basic-addon2">
 
         <input id="email" type="email" class="form-control" placeholder="Email" aria-label="Recipient's email address" aria-describedby="basic-addon2">
-        <div class="input-group-append">
-          <button onclick="buttonClicked()" class="btn btn-primary" type="button">Submit</button>
-        </div>
+
+        <button onclick="buttonClicked()" class="btn btn-primary mt-3" type="button">Submit</button>
       </div>
       <div>
         <p class="mt-5">
