@@ -39,10 +39,10 @@ def task1List(word):
 def task2():
     return send_from_directory(".", "client/task2.html")
 
-@app.route("/task2/<word>")
-def task2List(word):
-    test(word)
-    return jsonify(word)
+@app.route("/task2/<info>")
+def task2List(info):
+    words = dotask2(info)
+    return jsonify(words=words)
 
 @app.route("/task3")
 def task3():

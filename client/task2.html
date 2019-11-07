@@ -33,24 +33,26 @@
     </div>
     <div class="text-center">
       <h1>Task 2</h1>
-      <div class="input-group">
-        <input id="first" type="text" class="form-control" placeholder="First Name" aria-label="Recipient's username" aria-describedby="basic-addon2">
+      <div width="500px">
+        <input id="first" type="text" class="form-control" placeholder="First Name" aria-label="Recipient's First name" aria-describedby="basic-addon2">
       
-        <input id="last" type="text" class="form-control" placeholder="Last Name" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <input id="last" type="text" class="form-control" placeholder="Last Name" aria-label="Recipient's Last name" aria-describedby="basic-addon2">
       
-        <input id="birth" type="date" class="form-control" placeholder="Date Of Birth" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <input id="birth" type="date" class="form-control" placeholder="Date Of Birth" aria-label="Recipient's birthday" aria-describedby="basic-addon2">
       
-        <input id="phone" type="tel" class="form-control" placeholder="Phone Number" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <input id="phone" type="tel" class="form-control" placeholder="Phone Number" aria-label="Recipient's phone number" aria-describedby="basic-addon2">
       
-        <input id="street" type="text" class="form-control" placeholder="Street" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <input id="street" type="text" class="form-control" placeholder="Street" aria-label="Recipient's street address" aria-describedby="basic-addon2">
       
-        <input id="apt" type="text" class="form-control" placeholder="Apt No" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <input id="apt" type="text" class="form-control" placeholder="Apt No" aria-label="Recipient's apartment number" aria-describedby="basic-addon2">
       
-        <input id="city" type="text" class="form-control" placeholder="City" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <input id="city" type="text" class="form-control" placeholder="City" aria-label="Recipient's city" aria-describedby="basic-addon2">
       
-        <input id="state" type="text" class="form-control" placeholder="State" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <input id="state" type="text" class="form-control" placeholder="State" aria-label="Recipient's state" aria-describedby="basic-addon2">
       
-        <input id="zip" type="number" maxlength="5" class="form-control" placeholder="Zip Code" aria-label="Recipient's username" aria-describedby="basic-addon2">
+        <input id="zip" type="number" maxlength="5" class="form-control" placeholder="Zip Code" aria-label="Recipient's zip code" aria-describedby="basic-addon2">
+
+        <input id="email" type="email" class="form-control" placeholder="Email" aria-label="Recipient's email address" aria-describedby="basic-addon2">
         <div class="input-group-append">
           <button onclick="buttonClicked()" class="btn btn-primary" type="button">Submit</button>
         </div>
@@ -78,10 +80,11 @@
     let city = document.getElementById("city")
     let state = document.getElementById("state")
     let zip = document.getElementById("zip")
+    let email = document.getElementById("email")
     let result = document.getElementById("result")
     
     function buttonClicked () {
-      let value = [first.value, last.value, birth.value, phone.value, street.value, apt.value, city.value, state.value, zip.value]
+      let value = [first.value, last.value, birth.value, phone.value, street.value, apt.value, city.value, state.value, zip.value, email.value]
       result.innerHTML = "Working..."
       var xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
@@ -94,14 +97,4 @@
       xhttp.send();
     }
   </script>
-  <style>
-    #stylized input{
-    display: block;
-    font-size:11px;
-    padding:4px 2px;
-    border:solid 1px #aacfe4;
-    width:70px;
-    margin:2px 0 20px 10px;
-}
-  </style>
 </html>
