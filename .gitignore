@@ -3,9 +3,9 @@ venv
 *__pycache__*
 
 # CSV files
-*dictionary.csv
+# *dictionary.csv
 *ELCP2.csv
-*passwords_list.csv
-*replacement.csv
+# *passwords_list.csv
+# *replacement.csv
 *savedHashes.csv
 *savedPasswords.csv
