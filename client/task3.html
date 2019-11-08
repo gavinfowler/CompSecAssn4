@@ -33,6 +33,49 @@
     </div>
     <div class="text-center">
       <h1>Task 3</h1>
+        <input id="username-input" type="text" placeholder="Username...">
+        <input id="password-input" type="text" placeholder="Password...">
+        <button onclick="buttonClicked()" id="button" class="btn btn-primary" type="button">Login</button>
+        <p id="message"></p>
     </div>
   </body>
+  <script>
+    let button = document.getElementById("button")
+    let usernameInput = document.getElementById("username-input")
+    let passwordInput = document.getElementById("password-input")
+    let message = document.getElementById("message")
+    let failedAttempts = 0
+    let strikes = 0
+
+    function buttonClicked() {
+      let username = usernameInput.value
+      let password = passwordInput.value
+      let loginHash = passwordInput.value //salt this shit
+      let signUpHash = usernameInput.value //get the salted sign up password
+      //match up the loginPassword.salt and signUpPassword.salt
+
+      if (loginHash == signUpHash) {
+        failedAttempts = 0
+        strikes = 0
+        message.innerHTML = ""
+      } else {
+        if (failedAttempts < 3) {
+          failedAttempts += 1
+          message.innerHTML = "Attempts until timed lockout: " + (4 - failedAttempts)
+        } else if (failedAttempts == 3) {
+          failedAttempts = 0
+          strike()
+        }
+      }
+    }
+
+    function strike() {
+      button.disabled = true;
+      let time = Math.pow(2, strikes) * 60 * 1000
+      setTimeout(function(){button.disabled = false; message.innerHTML = ""; message.style.color="black"},time);
+      message.style.color="red"
+      message.innerHTML = "You have been locked out of the login feature for " + Math.pow(2, strikes) + " minute(s). Try again after this period has passed."
+      strikes += 1;
+    }
+  </script>
 </html>
