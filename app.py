@@ -21,6 +21,11 @@ CORS(app)
 app.config["CORS_HEADERS"] = "Content-Type"
 
 
+@app.route("/")
+def home():
+    return send_from_directory(".", "client/index.html")
+
+
 @app.route("/task1")
 def task1():
     return send_from_directory(".", "client/task1.html")
