@@ -14,6 +14,11 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
+    <style>
+      input {
+        margin: 1em;
+      }
+    </style>
   </head>
 
   <body>
@@ -33,6 +38,41 @@
     </div>
     <div class="text-center">
       <h1>Task 3</h1>
+      <h2>Sign Up</h2>
+      <div class="mb-3 mx-auto mt-5 w-50">
+	      <p class="mt-5">Already have an accout? You can <a href="/" >Login</a> here.</p>
+      </div>
+      <div class="mb-3 mx-auto w-75">
+        <input id="first" type="text" class="form-control" placeholder="First Name" aria-label="Recipient's First Name" aria-describedby="basic-addon2">
+	<input id="last" type="text" class="form-control" placeholder="Last Name" aria-label="Recipient's Last Name" aria-describedby="basic-addon2">
+	<p class="text-left" style="margin-left: 1em;">Birth Date</p>
+	<input id="birth" type="date" class="form-control" placeholder="Date Of Birth" aria-label="Recipiernt's Birthday" ariad-describedby="bassic-addon2">
+	<input id="phone" type="tel" class="form-control" placeholder="Phone Number" aria-label="Recipiernt's Phone Number" aria-describecby="basic-addon2">
+	<input id="street" type="text" class="form-control" placeholder="Street" aria-label="Recipient's Street Address" aria-describedby="bassic-addon2">
+	<input id="apt" type="text" class="form-control" placeholder="Apt No" aria-label="Recipient's Apartment Number" aria-describedby="bassic-addon2">
+	<input id="city" type="text" class="form-control" placeholder="City" aria-label="Recipient's City" aria-describedby="bassic-addon2">
+	<input id="state" type="text" class="form-control" placeholder="State" aria-label="Recipient's State" aria-describedby="bassic-addon2">
+	<input id="zip" type="number" maxlength="5" class="form-control" placeholder="Zip Code" aria-label="Recipient's Zip Cod" aria-desciribedby="bassic-addon2">
+	<input id="email" type="email" class="form-control" placeholder="Email" aria-label"Recipient's Email Address" aria-describedby="bassic-addon2">
+	<button onclick="buttonClicked()" class="btn btn-primary mt-3" type="button">Submit</button>
+      </div>
     </div>
   </body>
+	<script>
+	  let button = document.getElementById("button")
+	  let first = document.getElementById("first")
+	  let last = document.getElementById("last")
+	  let birth = document.getElementById("birth")
+	  let phone = document.getElementById("phone")
+	  let street = document.getElementById("street")
+	  let apt = document.getElementById("apt")
+	  let city = document.getElementById("city")
+	  let state = document.getElementById("state")
+	  let zip = document.getElementById("zip")
+	  let email = document.getElementById("eamil")
+	  
+	  function buttonClicked() {
+            let value = [first.value, last.value, birth.value, phone.value, street.value, apt.value, city.value, state.value, zip.value, email.value]
+          }
+        </script>
 </html>
