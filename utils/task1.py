@@ -29,26 +29,6 @@ SYMBOLS = [
 ]
 
 
-def parseDictCsv():
-    global dictionaryList
-    dictionaryList = []
-    with open(DICTIONARY, mode="r") as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            dictionaryList.append(row["word"])
-
-
-def parseReplacementCsv():
-    global replacementList
-    replacementList = []
-    with open(REPLACEMENT, mode="r") as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            replacementList.append(
-                {"original": row["original"], "modified": row["modified"]}
-            )
-
-
 def double(string):
     return string + string
 
@@ -134,15 +114,3 @@ def generateListTriple(word):
 
     return words
 
-
-def createListOfPasswords():
-    global dictionaryList
-    with open(PASSWORDSLIST, mode="w") as passwords_list:
-        passwords_writer = csv.DictWriter(passwords_list, ["word"])
-        passwords_writer.writeheader()
-        wordList = []
-        for word in dictionaryList:
-            wordList.extend(generateListDouble(word))
-            wordList.extend(generateListTriple(word))
-        for word in wordList:
-            passwords_writer.writerow({"word": word})
