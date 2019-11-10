@@ -10,6 +10,11 @@ from utils.task2 import *
 
 ACTUALPASSWORDS = "csv_files/savedPasswords.csv"
 ACTUALHASHES = "csv_files/savedHashes.csv"
+DICTIONARY = "csv_files/dictionary.csv"
+REPLACEMENT = "csv_files/replacement.csv"
+PASSWORDSLIST = "csv_files/passwords_list.csv"
+dictionaryList = []
+replacementList = []
 
 app = Flask(__name__)
 CORS(app)
@@ -29,7 +34,6 @@ def favicon():
 
 @app.route("/")
 def home():
-    parseDictCsv()
     return send_from_directory(".", "client/index.html")
 
 
@@ -172,9 +176,44 @@ def initPasswordList():
             writer.writeheader()
 
 
+def parseDictCsv():
+    global dictionaryList
+    dictionaryList = []
+    with open(DICTIONARY, mode="r") as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        for row in csv_reader:
+            dictionaryList.append(row["word"])
+    print(dictionaryList)
+
+
+def parseReplacementCsv():
+    global replacementList
+    replacementList = []
+    with open(REPLACEMENT, mode="r") as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        for row in csv_reader:
+            replacementList.append(
+                {"original": row["original"], "modified": row["modified"]}
+            )
+
+
+def createListOfPasswords():
+    global dictionaryList
+    with open(PASSWORDSLIST, mode="w") as passwords_list:
+        passwords_writer = csv.DictWriter(passwords_list, ["word"])
+        passwords_writer.writeheader()
+        wordList = []
+        for word in dictionaryList:
+            wordList.extend(generateListDouble(word))
+            wordList.extend(generateListTriple(word))
+        for word in wordList:
+            passwords_writer.writerow({"word": word})
+
+
 if __name__ == "__main__":
     parseDictCsv()
     parseReplacementCsv()
-    createListOfPasswords()
     initPasswordList()
+    createListOfPasswords()
     app.run(debug=True)
+
