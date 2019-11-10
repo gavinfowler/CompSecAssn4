@@ -13,6 +13,7 @@ ACTUALHASHES = "csv_files/savedHashes.csv"
 DICTIONARY = "csv_files/dictionary.csv"
 REPLACEMENT = "csv_files/replacement.csv"
 PASSWORDSLIST = "csv_files/passwords_list.csv"
+ELCP2 = "csv_files/ELCP2.csv"
 dictionaryList = []
 replacementList = []
 
@@ -86,6 +87,21 @@ def validPass():
             dictVars.append(row["word"])
 
     for x in dictVars:
+        if password == x:
+            return jsonify(
+                {
+                    "valid": "false",
+                    "error": "Password contains a common dictionary word",
+                }
+            )
+
+    dictVars1 = []
+    with open(ELCP2, mode="r") as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        for row in csv_reader:
+            dictVars1.append(row["word"])
+
+    for x in dictVars1:
         if password == x:
             return jsonify(
                 {
