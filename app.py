@@ -125,8 +125,7 @@ def checkPass():
             if row["username"] == requestUsername:
                 salt = row["hashes"]
     if salt != "" and password != "" and username != "":
-        hashedPass = hashlib.sha224(
-            bytes(requestPassword + salt, "utf-8")).hexdigest()
+        hashedPass = hashlib.sha224(bytes(requestPassword + salt, "utf-8")).hexdigest()
         if hashedPass == password:
             return jsonify({"acknowledged": "true"})
     return jsonify({"acknowledged": "false", "error": "Incorrect username or password"})

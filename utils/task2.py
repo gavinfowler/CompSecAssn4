@@ -1,5 +1,5 @@
 import csv
-from itertools import combinations 
+from itertools import combinations
 
 DICTIONARY = "csv_files/dictionary.csv"
 REPLACEMENT = "csv_files/replacement.csv"
@@ -49,30 +49,31 @@ def parseReplacementCsv():
                 {"original": row["original"], "modified": row["modified"]}
             )
 
+
 def dotask2(val):
-    values = val.split(',')
+    values = val.split(",")
     remove_indices = []
     # first = values[0]
     # last = values[1]
     birth = values[2]
-    print('birth:', birth)
-    birthArr = birth.split('-')
+    print("birth:", birth)
+    birthArr = birth.split("-")
     remove_indices.append(2)
     phone = values[3]
-    phoneArr = phone.split('-')
+    phoneArr = phone.split("-")
     if len(phoneArr) >= 3:
-        phoneArr.append(phoneArr[-2] + phoneArr[-1]) #Last 6 digits
+        phoneArr.append(phoneArr[-2] + phoneArr[-1])  # Last 6 digits
     remove_indices.append(3)
     street = values[4]
-    streetArr = street.split(' ')
+    streetArr = street.split(" ")
     remove_indices.append(4)
     # apt = values[5]
     # city = values[6]
     # state = values[7]
     # zipcode = values[8]
     email = values[9]
-    emailArr = email.split('@')[0]
-    emailArr = emailArr.split('_')
+    emailArr = email.split("@")[0]
+    emailArr = emailArr.split("_")
     remove_indices.append(9)
     values = [i for j, i in enumerate(values) if j not in remove_indices]
     for arr in [birthArr, phoneArr, streetArr, emailArr]:
