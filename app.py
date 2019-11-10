@@ -95,6 +95,27 @@ def getpass():
     return d
 
 
+@app.route("/task3/getsigninpass")
+def getSignInPass():
+    print("Yo")
+    try:
+        body = json.loads(request.data)
+        username = body["username"]
+        password = body["password"]
+
+        with open(ACTUALHASHES, newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                d[row['username']] = row['hashed']
+                if (row['username'] == username):
+                    hashed = row['hashed']
+                    saltedPassword = password + hashed
+                    return hashlib.sha224(bytes(saltedPassword, "utf-8")).hexdigest()
+    except:
+        print("Getting sign in hash failed")
+        return jsonify({"awknowledged": "false"})
+
+
 def initPasswordList():
     if not os.path.exists(ACTUALPASSWORDS):
         with open(ACTUALPASSWORDS, "a") as csvfile:
