@@ -84,12 +84,30 @@
 	      if(xmlhttp.readyState == 4){
                 let response = JSON.parse(xmlhttp.response)
 		if(response['valid'] == 'true'){
-                  message.innterHTML = "Account succesfully created"
+                  message.innerHTML = "Password is valid"
+		  createAccount()
 		} else if(response['valid'] == 'false'){
                   message.innerHTML = response['error']
 		}
 	      }
             }
 	  }
+
+	function createAccount() {
+          var xmlhttp = new XMLHttpRequest();
+	  var theUrl = "/task3/savepass";
+	  xmlhttp.open("POST", theUrl);
+	  xmlhttp.send(JSON.stringify({username: username, password: password}));
+          xmlhttp.onreadystatechange = function() {
+	    if(xmlhttp.readyState == 4){
+	      let response = JSON.parse(xmlhttp.response)
+	      if(response['acknowledged'] == 'true'){
+	        message.innerHTML = "Account created"
+	      }else if(response['acknowledged'] == 'false'){
+	        message.innerHTML = "Account creation failed"
+	      }
+            }
+          }
+	}
         </script>
 </html>

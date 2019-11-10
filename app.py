@@ -52,18 +52,17 @@ def task3():
 def validPass():
     body = json.loads(request.data)
     password = body["password"]
-
     info = body["info"]
     infoString = ",".join(map(str, info))
     infoVars = dotask2(infoString)
     for x in infoVars:
         if(password == x):
-            return jsonif({"valid": "false", "error": "Password contains personal information"})
+            return jsonify({"valid": "false", "error": "Password contains personal information"})
 
     dictVars = []
     with open(PASSWORDSLIST, mode="r") as csv_file:
         csv_reader = csv.DictReader(csv_file)
-        for row in sdv_reader:
+        for row in csv_reader:
             dictVars.append(row["word"])
 
     for x in  dictVars:
