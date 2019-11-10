@@ -51,14 +51,16 @@
 	<input id="state" type="text" class="form-control" placeholder="State" aria-label="Recipient's State" aria-describedby="bassic-addon2">
 	<input id="zip" type="number" maxlength="5" class="form-control" placeholder="Zip Code" aria-label="Recipient's Zip Cod" aria-desciribedby="bassic-addon2">
 	<input id="email" type="email" class="form-control" placeholder="Email" aria-label"Recipient's Email Address" aria-describedby="bassic-addon2">
+	<input id="username" type="text" class="form-control" placeholder="Username" aria-label="Recipient's Username" aria-describedby="bassic-addon2">
 	<input id="password" type="text" class="form-control" placeholder="Password" aria-label="Recipient's Password" aria-describedby="bassic-addon2">
-	<input id="password-confirm" type="text" class="form-control" placeholder="Reenter Password" aria-label="Recipient's Password Confirmation" aria-describedby="bassic-addon2">
+	<p id="message"></p>
 	<button onclick="buttonClicked()" class="btn btn-primary mt-3" type="button">Submit</button>
       </div>
     </div>
   </body>
 	<script>
 	  let button = document.getElementById("button")
+          let message = document.getElementById("message")
 	  let first = document.getElementById("first")
 	  let last = document.getElementById("last")
 	  let birth = document.getElementById("birth")
@@ -68,10 +70,26 @@
 	  let city = document.getElementById("city")
 	  let state = document.getElementById("state")
 	  let zip = document.getElementById("zip")
-	  let email = document.getElementById("eamil")
-	  
+	  let email = document.getElementById("email")
+	  let username = document.getElementById("username")
+	  let password = document.getElementById("password")
+
 	  function buttonClicked() {
-            let value = [first.value, last.value, birth.value, phone.value, street.value, apt.value, city.value, state.value, zip.value, email.value]
-          }
+            let info = [first.value, last.value, birth.value, phone.value, street.value, apt.value, city.value, state.value, zip.value, email.value]
+	    var xmlhttp = new XMLHttpRequest();
+	    var theUrl = "/task3/validpass";
+	    xmlhttp.open("POST", theUrl);
+	    xmlhttp.send(JSON.stringify({info: info, password: password.value}));
+	    xmlhttp.onreadystatechange = function() {
+	      if(xmlhttp.readyState == 4){
+                let response = JSON.parse(xmlhttp.response)
+		if(response['valid'] == 'true'){
+                  message.innterHTML = "Account succesfully created"
+		} else if(response['valid'] == 'false'){
+                  message.innerHTML = response['error']
+		}
+	      }
+            }
+	  }
         </script>
 </html>

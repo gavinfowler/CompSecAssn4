@@ -48,6 +48,29 @@ def task2List(info):
 def task3():
     return send_from_directory(".", "client/task3.html")
 
+@app.route("/task3/validpass", methods=["POST"])
+def validPass():
+    body = json.loads(request.data)
+    password = body["password"]
+
+    info = body["info"]
+    infoString = ",".join(map(str, info))
+    infoVars = dotask2(infoString)
+    for x in infoVars:
+        if(password == x):
+            return jsonif({"valid": "false", "error": "Password contains personal information"})
+
+    dictVars = []
+    with open(PASSWORDSLIST, mode="r") as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        for row in sdv_reader:
+            dictVars.append(row["word"])
+
+    for x in  dictVars:
+        if(password == x):
+            return jsonify({"valid": "false", "error": "Password contains a common dictionary word"})
+
+    return jsonify({"valid": "true"})
 
 # Send using:
 # var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
@@ -55,7 +78,6 @@ def task3():
 # xmlhttp.open("POST", theUrl);
 # xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 # xmlhttp.send(JSON.stringify({ "username": "username", "password": "password" }));
-
 
 @app.route("/task3/savepass")
 def savePass():
