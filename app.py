@@ -39,10 +39,12 @@ def task1List(word):
 def task2():
     return send_from_directory(".", "client/task2.html")
 
+
 @app.route("/task2/<info>")
 def task2List(info):
     words = dotask2(info)
     return jsonify(words=words)
+
 
 @app.route("/task3")
 def task3():
@@ -81,6 +83,16 @@ def savePass():
     except:
         print("Saving password to a file failed")
         return jsonify({"acknowledged": "false"})
+
+
+@app.route("/task3/getpass")
+def getpass():
+    with open(ACTUALPASSWORDS, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        d = {}
+        for row in reader:
+            d[row['username']] = row['password']
+    return d
 
 
 def initPasswordList():

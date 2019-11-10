@@ -48,25 +48,33 @@
     let strikes = 0
 
     function buttonClicked() {
-      let username = usernameInput.value
-      let password = passwordInput.value
-      let loginHash = passwordInput.value //salt this shit
-      let signUpHash = usernameInput.value //get the salted sign up password
-      //match up the loginPassword.salt and signUpPassword.salt
-
-      if (loginHash == signUpHash) {
-        failedAttempts = 0
-        strikes = 0
-        message.innerHTML = ""
-      } else {
-        if (failedAttempts < 3) {
-          failedAttempts += 1
-          message.innerHTML = "Attempts until timed lockout: " + (4 - failedAttempts)
-        } else if (failedAttempts == 3) {
-          failedAttempts = 0
-          strike()
+			var passDict = {}
+      var loginHash = passwordInput.value //salt this shit
+      var signUpHash = ""
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+					var passDict = JSON.parse(this.responseText);
+					if (passDict[usernameInput.value]) {
+						signUpHash = passDict[usernameInput.value];
+						if (loginHash == signUpHash) {
+							failedAttempts = 0
+							strikes = 0
+							message.innerHTML = "Logging you in..."
+						} else {
+							if (failedAttempts < 3) {
+								failedAttempts += 1
+								message.innerHTML = "Attempts until timed lockout: " + (4 - failedAttempts)
+							} else if (failedAttempts == 3) {
+								failedAttempts = 0
+								strike()
+							}
+						}
+					}
         }
-      }
+      };
+      xhttp.open("GET", "/task3/getpass", true);
+      xhttp.send();
     }
 
     function strike() {
