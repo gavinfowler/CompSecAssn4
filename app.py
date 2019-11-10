@@ -124,7 +124,7 @@ def checkPass():
         hashedPass = hashlib.sha224(bytes(requestPassword + salt, "utf-8")).hexdigest()
         if hashedPass == password:
             return jsonify({"acknowledged": "true"})
-    return jsonify({"acknowledged": "false", "error": "Incorrect password"})
+    return jsonify({"acknowledged": "false", "error": "Incorrect username or password"})
 
 
 @app.route("/task3/getpass")
