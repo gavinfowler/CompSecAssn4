@@ -28,8 +28,8 @@ python3 app.py
 
 ### Task 3A
 
-- [ ] Create UI for account creation (include form from task 2)
-- [ ] Create backend for account creation
+- [x] Create UI for account creation (include form from task 2)
+- [x] Create backend for account creation
 
 ### Task 3B
 
