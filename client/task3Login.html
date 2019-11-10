@@ -53,7 +53,7 @@
 			var passDict = {}
       var loginHash = getSignInPass()
       var signUpHash = ""
-      var xhttp = new XMLHttpRequest();
+      let xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
 					var passDict = JSON.parse(this.responseText);
@@ -81,9 +81,9 @@
 
     function getSignInPass() {
       var xmlhttp = new XMLHttpRequest();
-      var theUrl = "/task3/getsigninpass";
+      var theUrl = "/task3/checkpass";
       xmlhttp.open("POST", theUrl);
-      xmlhttp.send(JSON.stringify({ "username": "username", "password": "password" }));
+      xmlhttp.send(JSON.stringify({ "username": "newtest", "password": "secret1" }));
     }
 
     function strike() {

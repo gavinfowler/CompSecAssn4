@@ -1,4 +1,4 @@
-from flask import Flask, request, send_from_directory, jsonify
+from flask import Flask, request, send_from_directory, jsonify, render_template
 from flask_cors import CORS, cross_origin
 import csv
 import json
@@ -14,6 +14,17 @@ ACTUALHASHES = "csv_files/savedHashes.csv"
 app = Flask(__name__)
 CORS(app)
 app.config["CORS_HEADERS"] = "Content-Type"
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return send_from_directory(".", "client/404.html"), 404
+
+
+@app.route("/favicon.ico")
+def favicon():
+    return send_from_directory("media", "favicon.ico")
 
 
 @app.route("/")
@@ -51,6 +62,11 @@ def task3():
     return send_from_directory(".", "client/task3.html")
 
 
+@app.route("/task3/login")
+def task3Login():
+    return send_from_directory(".", "client/task3Login.html")
+
+
 # Send using:
 # var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
 # var theUrl = "/task3/savepass";
@@ -85,17 +101,43 @@ def savePass():
         return jsonify({"acknowledged": "false"})
 
 
+@app.route("/task3/checkpass", methods=["POST"])
+def checkPass():
+    body = json.loads(request.data)
+    requestUsername = body["username"]
+    requestPassword = body["password"]
+    username = ""
+    password = ""
+    salt = ""
+    with open(ACTUALPASSWORDS, newline="") as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            if row["username"] == requestUsername:
+                username = requestUsername
+                password = row["password"]  # this is the set password
+    with open(ACTUALHASHES, newline="") as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            if row["username"] == requestUsername:
+                salt = row["hashes"]
+    if salt != "" and password != "" and username != "":
+        hashedPass = hashlib.sha224(bytes(requestPassword + salt, "utf-8")).hexdigest()
+        if hashedPass == password:
+            return jsonify({"acknowledged": "true"})
+    return jsonify({"acknowledged": "false", "error": "Incorrect password"})
+
+
 @app.route("/task3/getpass")
 def getpass():
-    with open(ACTUALPASSWORDS, newline='') as csvfile:
+    with open(ACTUALPASSWORDS, newline="") as csvfile:
         reader = csv.DictReader(csvfile)
         d = {}
         for row in reader:
-            d[row['username']] = row['password']
+            d[row["username"]] = row["password"]
     return d
 
 
-@app.route("/task3/getsigninpass")
+@app.route("/task3/getsigninpass", methods=["POST"])
 def getSignInPass():
     print("Yo")
     try:
@@ -103,17 +145,17 @@ def getSignInPass():
         username = body["username"]
         password = body["password"]
 
-        with open(ACTUALHASHES, newline='') as csvfile:
+        with open(ACTUALHASHES, newline="") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                d[row['username']] = row['hashed']
-                if (row['username'] == username):
-                    hashed = row['hashed']
+                d[row["username"]] = row["hashed"]
+                if row["username"] == username:
+                    hashed = row["hashed"]
                     saltedPassword = password + hashed
                     return hashlib.sha224(bytes(saltedPassword, "utf-8")).hexdigest()
     except:
         print("Getting sign in hash failed")
-        return jsonify({"awknowledged": "false"})
+        return jsonify({"acknowledged": "false"})
 
 
 def initPasswordList():
