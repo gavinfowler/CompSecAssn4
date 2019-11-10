@@ -51,6 +51,6 @@ hashlib.sha224(b"Text").hexdigest()
 
 ### Task 3C
 
-- [ ] Create UI for login
-- [ ] Create backend for login, using info from task 1 and 2
-- [ ] Implement UI lockout
+- [x] Create UI for login
+- [x] Create backend for login, using info from task 1 and 2
+- [x] Implement UI lockout
