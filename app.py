@@ -121,7 +121,8 @@ def checkPass():
             if row["username"] == requestUsername:
                 salt = row["hashes"]
     if salt != "" and password != "" and username != "":
-        hashedPass = hashlib.sha224(bytes(requestPassword + salt, "utf-8")).hexdigest()
+        hashedPass = hashlib.sha224(
+            bytes(requestPassword + salt, "utf-8")).hexdigest()
         if hashedPass == password:
             return jsonify({"acknowledged": "true"})
     return jsonify({"acknowledged": "false", "error": "Incorrect username or password"})
@@ -139,7 +140,6 @@ def getpass():
 
 @app.route("/task3/getsigninpass", methods=["POST"])
 def getSignInPass():
-    print("Yo")
     try:
         body = json.loads(request.data)
         username = body["username"]
