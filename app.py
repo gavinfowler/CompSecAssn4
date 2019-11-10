@@ -122,7 +122,6 @@ def task3Login():
 def savePass():
     try:
         body = json.loads(request.data)
-        print(body)
         username = body["username"]
         password = body["password"]
         hashed = secrets.token_hex(8)
