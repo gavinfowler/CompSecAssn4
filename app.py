@@ -66,29 +66,52 @@ def task3():
     return send_from_directory(".", "client/task3.html")
 
 
+@app.route("/task3/validpass", methods=["POST"])
+def validPass():
+    body = json.loads(request.data)
+    password = body["password"]
+    info = body["info"]
+    infoString = ",".join(map(str, info))
+    infoVars = dotask2(infoString)
+    for x in infoVars:
+        if password == x:
+            return jsonify(
+                {"valid": "false", "error": "Password contains personal information"}
+            )
+
+    dictVars = []
+    with open(PASSWORDSLIST, mode="r") as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        for row in csv_reader:
+            dictVars.append(row["word"])
+
+    for x in dictVars:
+        if password == x:
+            return jsonify(
+                {
+                    "valid": "false",
+                    "error": "Password contains a common dictionary word",
+                }
+            )
+
+    return jsonify({"valid": "true"})
+
+
 @app.route("/task3/login")
 def task3Login():
     return send_from_directory(".", "client/task3Login.html")
 
 
-# Send using:
-# var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
-# var theUrl = "/task3/savepass";
-# xmlhttp.open("POST", theUrl);
-# xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-# xmlhttp.send(JSON.stringify({ "username": "username", "password": "password" }));
-
-
-@app.route("/task3/savepass")
+@app.route("/task3/savepass", methods=["POST"])
 def savePass():
     try:
         body = json.loads(request.data)
+        print(body)
         username = body["username"]
         password = body["password"]
         hashed = secrets.token_hex(8)
         saltedPassword = password + hashed
         password = hashlib.sha224(bytes(saltedPassword, "utf-8")).hexdigest()
-
         with open(ACTUALPASSWORDS, "a") as csvfile:
             fieldnames = ["username", "password"]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -182,7 +205,6 @@ def parseDictCsv():
         csv_reader = csv.DictReader(csv_file)
         for row in csv_reader:
             dictionaryList.append(row["word"])
-    print(dictionaryList)
 
 
 def parseReplacementCsv():

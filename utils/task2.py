@@ -56,7 +56,6 @@ def dotask2(val):
     # first = values[0]
     # last = values[1]
     birth = values[2]
-    print("birth:", birth)
     birthArr = birth.split("-")
     remove_indices.append(2)
     phone = values[3]

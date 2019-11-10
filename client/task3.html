@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Assn4</title>
+    <meta name="description" content="Computer Security Assn4" />
+    <meta name="author" content="GAMK" />
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <style>
+      input {
+        margin: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm"
+    >
+      <h5 class="my-0 mr-md-auto font-weight-normal">
+        <a href="/" class="text-black">
+          Computer Security Assignment 4
+        </a>
+      </h5>
+      <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="/task1">Task 1</a>
+        <a class="p-2 text-dark" href="/task2">Task 2</a>
+        <a class="p-2 text-dark" href="/task3">Task 3A</a>
+        <a class="p-2 text-dark" href="/task3/login">Task 3C</a>
+      </nav>
+    </div>
+    <div class="text-center">
+      <h1>Task 3</h1>
+      <h2>Sign Up</h2>
+      <div class="mb-3 mx-auto w-75">
+        <input
+          id="first"
+          type="text"
+          class="form-control"
+          placeholder="First Name"
+          aria-label="Recipient's First Name"
+          aria-describedby="basic-addon2"
+        />
+        <input
+          id="last"
+          type="text"
+          class="form-control"
+          placeholder="Last Name"
+          aria-label="Recipient's Last Name"
+          aria-describedby="basic-addon2"
+        />
+        <p class="text-left" style="margin-left: 1em;">Birth Date</p>
+        <input
+          id="birth"
+          type="date"
+          class="form-control"
+          placeholder="Date Of Birth"
+          aria-label="Recipiernt's Birthday"
+          ariad-describedby="bassic-addon2"
+        />
+        <input
+          id="phone"
+          type="tel"
+          class="form-control"
+          placeholder="Phone Number"
+          aria-label="Recipiernt's Phone Number"
+          aria-describecby="basic-addon2"
+        />
+        <input
+          id="street"
+          type="text"
+          class="form-control"
+          placeholder="Street"
+          aria-label="Recipient's Street Address"
+          aria-describedby="bassic-addon2"
+        />
+        <input
+          id="apt"
+          type="text"
+          class="form-control"
+          placeholder="Apt No"
+          aria-label="Recipient's Apartment Number"
+          aria-describedby="bassic-addon2"
+        />
+        <input
+          id="city"
+          type="text"
+          class="form-control"
+          placeholder="City"
+          aria-label="Recipient's City"
+          aria-describedby="bassic-addon2"
+        />
+        <input
+          id="state"
+          type="text"
+          class="form-control"
+          placeholder="State"
+          aria-label="Recipient's State"
+          aria-describedby="bassic-addon2"
+        />
+        <input
+          id="zip"
+          type="number"
+          maxlength="5"
+          class="form-control"
+          placeholder="Zip Code"
+          aria-label="Recipient's Zip Cod"
+          aria-desciribedby="bassic-addon2"
+        />
+        <input id="email" type="email" class="form-control" placeholder="Email"
+        aria-label"Recipient's Email Address" aria-describedby="bassic-addon2">
+        <input
+          id="username"
+          type="text"
+          class="form-control"
+          placeholder="Username"
+          aria-label="Recipient's Username"
+          aria-describedby="bassic-addon2"
+        />
+        <input
+          id="password"
+          type="text"
+          class="form-control"
+          placeholder="Password"
+          aria-label="Recipient's Password"
+          aria-describedby="bassic-addon2"
+        />
+        <p id="message"></p>
+        <button
+          onclick="buttonClicked()"
+          class="btn btn-primary mt-3"
+          type="button"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </body>
+  <script>
+    let button = document.getElementById("button");
+    let message = document.getElementById("message");
+    let first = document.getElementById("first");
+    let last = document.getElementById("last");
+    let birth = document.getElementById("birth");
+    let phone = document.getElementById("phone");
+    let street = document.getElementById("street");
+    let apt = document.getElementById("apt");
+    let city = document.getElementById("city");
+    let state = document.getElementById("state");
+    let zip = document.getElementById("zip");
+    let email = document.getElementById("email");
+    let username = document.getElementById("username");
+    let password = document.getElementById("password");
+
+    function buttonClicked() {
+      let info = [
+        first.value,
+        last.value,
+        birth.value,
+        phone.value,
+        street.value,
+        apt.value,
+        city.value,
+        state.value,
+        zip.value,
+        email.value
+      ];
+      var xmlhttp = new XMLHttpRequest();
+      var theUrl = "/task3/validpass";
+      xmlhttp.open("POST", theUrl);
+      xmlhttp.send(JSON.stringify({ info: info, password: password.value }));
+      xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4) {
+          let response = JSON.parse(xmlhttp.response);
+          if (response["valid"] == "true") {
+            message.innerHTML = "Password is valid";
+            createAccount();
+          } else if (response["valid"] == "false") {
+            message.innerHTML = response["error"];
+          }
+        }
+      };
+    }
+
+    function createAccount() {
+      console.log("account");
+      var xmlhttp = new XMLHttpRequest();
+      var theUrl = "/task3/savepass";
+      xmlhttp.open("POST", theUrl);
+      xmlhttp.send(
+        JSON.stringify({ username: username.value, password: password.value })
+      );
+      xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4) {
+          let response = JSON.parse(xmlhttp.response);
+          if (response["acknowledged"] == "true") {
+            message.innerHTML = "Account created";
+          } else if (response["acknowledged"] == "false") {
+            message.innerHTML = "Account creation failed";
+          }
+        }
+      };
+    }
+  </script>
+</html>
